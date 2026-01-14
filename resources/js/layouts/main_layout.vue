@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+    import { Link } from '@inertiajs/vue3';
+    import { trans } from 'laravel-vue-i18n';
 
-const menu = [
-    { name: 'dashboard', text: 'Panel główny'},
-];
+    const menu = [
+        { name: 'dashboard' },
+    ];
 </script>
 
 <template>
@@ -22,13 +23,13 @@ const menu = [
                     class="block px-4 py-2.5 transition duration-200 hover:bg-slate-700 "
                     :class="$page.component === item.name ? 'border-l-4 border-white ' : ''"
                 >
-                    {{ item.text }}
+                    {{ trans("app.nav." + item.name) }}
                 </Link>
             </nav>
 
             <div class="border-t-4 border-slate-700">
                 <Link :href="route('logout')" method="post" class="w-full cursor-pointer py-4 transition duration-200  hover:bg-slate-700">
-                    Wyloguj się
+                    {{ trans('actions.log_out') }}
                 </Link>
             </div>
         </aside>

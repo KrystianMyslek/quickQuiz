@@ -116,4 +116,6 @@ return [
     'user'            => 'Użytkownik',
     'view'            => 'Widok',
     'yes'             => 'Tak',
+    'register'        => 'Zarejestruj się',
+    'enter'           => 'Wprowadź',
 ];

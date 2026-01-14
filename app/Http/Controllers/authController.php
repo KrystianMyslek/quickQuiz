@@ -10,7 +10,6 @@ class authController extends Controller
 {
     public function register(Request $request)
     {
-
         $user_data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -51,5 +50,12 @@ class authController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home');
+    }
+
+    public function dashboard()
+    {
+        
+
+        return inertia('dashboard');
     }
 }

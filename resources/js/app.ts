@@ -6,6 +6,7 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { i18nVue } from 'laravel-vue-i18n';
 
 import mainLayout from './layouts/main_layout.vue';
 
@@ -27,6 +28,12 @@ createInertiaApp({
             .component('font-awesome-icon', FontAwesomeIcon)
             .use(plugin)
             .use(ZiggyVue)
+            .use(i18nVue, {
+                resolve: async (lang: string) => {
+                    const langs = import.meta.glob('../../lang/*.json');
+                    return await langs[`../../lang/${lang}.json`]();
+                },
+            })
             .mount(el);
     },
     progress: {

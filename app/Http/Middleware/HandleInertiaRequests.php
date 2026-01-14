@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                     ? $request->user()->only('id', 'name')
                     : null,
             ],
+            'locale' => $request->user()->locale ?? $request->getPreferredLanguage(),
         ];
     }
 }
