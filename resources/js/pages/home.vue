@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import layout from '@/layouts/empty_layout.vue';
+    import { Link } from '@inertiajs/vue3';
 
     defineOptions({
         layout,
@@ -12,13 +13,13 @@
             <div class="flex flex-row-reverse">
                 <Link
                     :href="route('register')"
-                    class="my-6 ml-3 mr-6 cursor-pointer rounded-lg border-2 border-slate-500 bg-slate-800 p-10 py-4 text-white transition duration-200 hover:bg-slate-700"
+                    class="button my-6 ml-3 mr-6 p-10 py-4"
                 >
                     <span>{{ $t('actions.register') }}</span>
                 </Link>
                 <Link
                     :href="route('login')"
-                    class="my-6 ml-6 mr-3 cursor-pointer rounded-lg border-2 border-slate-500 bg-slate-800 p-10 py-4 text-white transition duration-200 hover:bg-slate-700"
+                    class="button my-6 ml-6 mr-3 p-10 py-4"
                 >
                     <span>{{ $t('actions.log_in') }}</span>
                 </Link>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\userRole;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,8 @@ class authController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:4|confirmed',
         ]);
+
+        $user_data['role'] = userRole::User->value;
 
         $user = User::create($user_data); 
 
@@ -54,8 +57,6 @@ class authController extends Controller
 
     public function dashboard()
     {
-        
-
         return inertia('dashboard');
     }
 }

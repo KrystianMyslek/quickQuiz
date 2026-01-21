@@ -2,7 +2,6 @@
     import layout from '@/layouts/empty_layout.vue';
     import registerInput from '@/pages/auth/component/register_input.vue';
     import { useForm } from '@inertiajs/vue3';
-    // import { wTrans } from 'laravel-vue-i18n';
 
     defineOptions({
         layout,

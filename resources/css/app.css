@@ -11,3 +11,8 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+a.button,
+button:not(.notlink) {
+    @apply cursor-pointer rounded-lg border-2 border-slate-500 bg-slate-800 text-white transition duration-200 hover:bg-slate-700
+}

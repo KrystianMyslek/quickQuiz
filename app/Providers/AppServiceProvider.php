@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Category;
+use App\Models\Quiz;
+use App\Policies\CategoryPolicy;
+use App\Policies\QuizPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(Category::class, CategoryPolicy::class);
+        Gate::policy(Quiz::class, QuizPolicy::class);
     }
 }
