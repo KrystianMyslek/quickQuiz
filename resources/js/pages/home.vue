@@ -13,13 +13,13 @@
             <div class="flex flex-row-reverse">
                 <Link
                     :href="route('register')"
-                    class="button my-6 ml-3 mr-6 p-10 py-4"
+                    class="custom my-6 ml-3 mr-6 p-10 py-4"
                 >
                     <span>{{ $t('actions.register') }}</span>
                 </Link>
                 <Link
                     :href="route('login')"
-                    class="button my-6 ml-6 mr-3 p-10 py-4"
+                    class="custom my-6 ml-6 mr-3 p-10 py-4"
                 >
                     <span>{{ $t('actions.log_in') }}</span>
                 </Link>

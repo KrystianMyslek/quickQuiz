@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import { useForm } from '@inertiajs/vue3';
+    import TextForm from '../components/textForm.vue';
 
     const form = useForm({
         name: null,
@@ -22,30 +23,22 @@
 </script>
 
 <template>
-    <h1 class="text-white text-2xl my-6">{{ $t('app.category.create') }}</h1>
-
     <form @submit.prevent="submit">
-        <div class="mr-12 flex justify-between ">
-            <div class="w-full">
-                <label for="name" class="block text-sm/6 font-medium text-white pb-2">
-                    {{ $t('app.category.name') }}
-                </label>
-                <div>
-                    <div class="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-slate-500" >
-                        <input
-                            id="name"
-                            type="text"
-                            v-model="form.name"
-                            :placeholder="$t('app.category.name')"
-                            class="block min-w-0 grow bg-transparent py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6"
-                        />
-                    </div>
+        <h1 class="text-white text-2xl mb-6">
+            {{ $t('app.category.create') }}
+        </h1>
 
-                    <small class="text-red-600" v-if="form.errors.name">{{ form.errors.name }}</small>
-                </div>
+        <div class="mr-12 flex justify-between ">
+            <div class="w-2/5 mb-4">
+                <TextForm
+                    v-model="form.name"
+                    :label="$t('app.category.name')"
+                    type="text"
+                    :error="form.errors.name"
+                />
             </div>
 
-            <div class="mx-12">
+            <div class="align-end">
                 <div class="relative h-28 w-28 overflow-hidden">
                     <label for="image" class="absolute inset-0 grid cursor-pointer content-end"> </label>
                     <input type="file" @input="change" id="image" hidden />
@@ -57,7 +50,7 @@
         </div>
 
         <div>
-            <button class="px-4 py-2" :disabled="form.processing">{{ $t('actions.save') }}</button>
+            <button class="custom px-4 py-2" :disabled="form.processing">{{ $t('actions.save') }}</button>
         </div>
     </form>
 </template>

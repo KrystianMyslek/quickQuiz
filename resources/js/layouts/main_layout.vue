@@ -5,6 +5,8 @@
     const menu = [
         { name: 'dashboard' },
         { name: 'category_index', admin: true },
+        { name: 'quiz_index' },
+        { name: 'quiz_mylist' },
     ];
 </script>
     
@@ -37,7 +39,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto p-4 bg-gradient-to-r to-slate-900 from-slate-700">
+        <main class="main_layout">
             <div v-if="$page.props.flash.message" class="mb-4">
                 <p class="p-4 bg-green-100 text-sm">{{ $page.props.flash.message }}</p>
             </div>

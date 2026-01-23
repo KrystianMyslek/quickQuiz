@@ -22,3 +22,29 @@ export interface User {
     created_at: string;
     updated_at: string;
 }
+
+export interface Category {
+    id: number;
+    name: string;
+    image?: string;
+}
+
+export interface Quiz {
+    id: number;
+    category: Category
+    name: string;
+    user_id: User;
+    created_at: string;
+    updated_at: string;
+    questions_count?: number;
+}
+
+export interface Question {
+    id: number;
+    content: string;
+}
+
+export interface Answer {
+    id: number;
+    content: string;
+}

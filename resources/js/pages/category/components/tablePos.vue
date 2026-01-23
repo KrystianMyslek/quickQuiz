@@ -1,5 +1,10 @@
 <script setup lang="ts">
     import { Link } from '@inertiajs/vue3';
+    import destroyDialog from '@/pages/components/destroyDialog.vue';    
+    import { ref } from 'vue';
+
+    const destroyLinkRef = ref()
+    const destroyDialogRef = ref()
 
     defineProps({
         category: {
@@ -12,24 +17,19 @@
         },
     });
 
+    const destroy = () => {
+        destroyLinkRef.value?.$el.click();
+    };
 </script>
 
 <template>
-    <ConfirmDialog group="headless">
-        <template #container="{ message, acceptCallback, rejectCallback }">
-            <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-                <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-                    <i class="pi pi-question !text-4xl"></i>
-                </div>
-                <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
-                <p class="mb-0">{{ message.message }}</p>
-                <div class="flex items-center gap-2 mt-6">
-                    <Button label="Save" @click="acceptCallback" class="w-32"></Button>
-                    <Button label="Cancel" variant="outlined" @click="rejectCallback" class="w-32"></Button>
-                </div>
-            </div>
-        </template>
-    </ConfirmDialog>
+
+    <destroyDialog 
+        ref="destroyDialogRef" 
+        @confirmedDestroy="destroy" 
+        :label="$t('app.category.confirm_destroy_label')" 
+        :content="$t('app.category.confirm_destroy_content')" 
+    />
 
     <tr class="border-b text-white border-slate-500">
         <td class="w-1 px-5 py-3 ">{{ category.id }}</td>
@@ -47,12 +47,18 @@
             >
                 {{ $t('actions.edit') }}
             </Link>
-            <Link
-                :href="route('category_destroy', { id: category.id })"
-                class="notlink rounded-lg text-center align-middle text-slate-500 transition-all hover:text-white"
-                method="delete"
+            <button 
+                @click="destroyDialogRef.openDestroyDialog(true)"
+                class="notlink rounded-lg text-center align-middle text-slate-500 transition-all hover:text-white" 
             >
                 {{ $t('actions.delete') }}
+            </button>
+            <Link
+                ref="destroyLinkRef"
+                :href="route('category_destroy', { id: category.id })"
+                method="delete"
+                class="hidden"
+            >
             </Link>
         </td>
     </tr>

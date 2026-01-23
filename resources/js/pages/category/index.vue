@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Link } from '@inertiajs/vue3';
-    import table_pos from '@/pages/category/components/table_pos.vue';
+    import tablePos from '@/pages/category/components/tablePos.vue';
 
     defineProps({
         categories: Array<{
@@ -11,15 +11,8 @@
 </script>
 
 <template>
-    <div class="h-full flex flex-col gap-6  justify-between">
+    <div class="h-full flex flex-col gap-6 justify-between">
         <div class="w-full flex items-center justify-between">
-            <Link
-                :href="route('category_create')"
-                class="button px-4 py-2"
-            >
-                {{ $t('actions.create') }}
-            </Link>
-
             <div class="text-white">
                 <div class="w-max">
                     <div class="w-full md:w-72">
@@ -41,6 +34,13 @@
                     </div>
                 </div>
             </div>
+
+            <Link
+                :href="route('category_create')"
+                class="custom px-4 py-2"
+            >
+                {{ $t('actions.create') }}
+            </Link>
         </div>
 
         <div class="h-full overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900 [&::-webkit-scrollbar-thumb]:bg-slate-500">
@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <table_pos v-for="category in categories" :key="category.id" :category="category" />
+                    <tablePos v-for="category in categories" :key="category.id" :category="category" />
                 </tbody>
             </table>
         </div>

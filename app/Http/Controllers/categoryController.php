@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -43,7 +42,7 @@ class categoryController extends Controller
 
         return redirect()
             ->route('category_index')
-            ->with('message', __('category.created_successfully'));
+            ->with('message', __('app.category.created_successfully'));
     }
 
     public function edit($id)
@@ -79,7 +78,7 @@ class categoryController extends Controller
 
         return redirect()
             ->route('category_index')
-            ->with('message', __('category.updated_successfully'));
+            ->with('message', __('app.category.updated_successfully'));
     }
 
     public function destroy($id)
@@ -96,6 +95,6 @@ class categoryController extends Controller
 
         return redirect()
             ->route('category_index')
-            ->with('message', __('category.deleted_successfully'));
+            ->with('message', __('app.category.deleted_successfully'));
     }
 }
