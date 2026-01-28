@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { useForm } from '@inertiajs/vue3';
-    import TextForm from '../components/textForm.vue';
+    import InputForm from '../components/inputForm.vue';
 
     const form = useForm({
         name: null,
@@ -30,7 +30,7 @@
 
         <div class="mr-12 flex justify-between ">
             <div class="w-2/5 mb-4">
-                <TextForm
+                <InputForm
                     v-model="form.name"
                     :label="$t('app.category.name')"
                     type="text"

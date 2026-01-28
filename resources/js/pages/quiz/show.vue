@@ -1,0 +1,3 @@
+<template>
+    SHOW QUIZ
+</template>

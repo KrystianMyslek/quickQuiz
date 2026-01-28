@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('question_id')->constrained('questions');
             $table->string('content', 255);
-            $table->integer('time_to_answer');
-            $table->integer('score');
         });
     }
 

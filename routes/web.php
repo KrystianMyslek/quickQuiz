@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\categoryController;
+use App\Http\Controllers\quizController;
 
 Route::middleware(['guest'])->group(function () {
     Route::inertia('/', 'home')->name('home');
@@ -26,6 +27,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/edit', [categoryController::class, 'edit'])->name('category_edit');
         Route::post('/{id}/edit', [categoryController::class, 'update'])->name('category_update');
         Route::delete('/{id}', [categoryController::class, 'destroy'])->name('category_destroy');
+    });
+
+    Route::group(['prefix' => 'quiz'], function () {
+        Route::get('/', [quizController::class, 'index'])->name('quiz_index');
+        Route::get('/mylist', [quizController::class, 'mylist'])->name('quiz_mylist');
+        Route::get('/{id}', [quizController::class, 'show'])->name('quiz_show')->where('id', '[0-9]+');
+        Route::get('/create', [quizController::class, 'create'])->name('quiz_create');
+        Route::post('/create', [quizController::class, 'store'])->name('quiz_store');
+        Route::get('/{id}/edit', [quizController::class, 'edit'])->name('quiz_edit');
+        Route::post('/{id}/edit', [quizController::class, 'update'])->name('quiz_update');
+        Route::delete('/{id}', [quizController::class, 'destroy'])->name('quiz_destroy');
     });
 
 });

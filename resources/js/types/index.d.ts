@@ -42,6 +42,10 @@ export interface Quiz {
 export interface Question {
     id: number;
     content: string;
+    answers: Array<Answer>;
+    time_to_answer: number;
+    score: number;
+    good_answer: number;
 }
 
 export interface Answer {

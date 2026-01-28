@@ -39,7 +39,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="main_layout">
+        <main class="main_layout [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900 [&::-webkit-scrollbar-thumb]:bg-slate-500" >
             <div v-if="$page.props.flash.message" class="mb-4">
                 <p class="p-4 bg-green-100 text-sm">{{ $page.props.flash.message }}</p>
             </div>
