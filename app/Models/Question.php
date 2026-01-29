@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Question extends Model
@@ -19,6 +20,11 @@ class Question extends Model
 
     public function goodAnswer(): HasOne
     {
-        return $this->hasOne(Answer::class, 'good_answer_id');
+        return $this->hasOne(Answer::class, 'id', 'good_answer_id');
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class, 'question_id');
     }
 }

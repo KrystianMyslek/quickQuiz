@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Category;
+use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -10,9 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class quizController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('quiz/index');
+        $quizes = Quiz::with(['category', 'user'])->withCount('questions')->where('user_id', '!=',  $request->user()->id)->get();
+
+        return inertia('quiz/index', ['quizes' => $quizes]);
     }
 
     public function mylist(Request $request)
@@ -42,24 +46,12 @@ class quizController extends Controller
     {
         Gate::authorize('create', Quiz::class);
 
-        $fields = Validator::make($request->all(), [
-            'name' => ['required', 'max:255'],
-            'category' => ['required', 'exists:categories,id'],
-            'questions.*.content' => ['required', 'string'],
-            'questions.*.time_to_answer' => ['required', 'integer', 'min:1'],
-            'questions.*.score' => ['required', 'integer', 'min:1'],
-            'questions.*.answers.*.content' => ['required', 'string'],
-            'questions.*.good_answer' => ['required', 'integer'],
-        ], [
-            'questions.*.content.required' => __('validation.questions.content.required'),
-            'questions.*.time_to_answer.required' => __('validation.questions.time_to_answer.required'),
-            'questions.*.score.required' => __('validation.questions.score.required'),
-            'questions.*.answers.*.content.required' => __('validation.questions.answers.content.required'),
-        ])->validate();
+        $fields = $this->validate($request);
 
-        $fields['user_id'] = $request->user()->id;
+        $quiz = new Quiz();
+        $quiz->user_id = $request->user()->id;
 
-        Quiz::procesForm($fields);
+        $this->processForm($fields, $quiz);
 
         return redirect()
             ->route('quiz_mylist')
@@ -68,16 +60,105 @@ class quizController extends Controller
 
     public function edit($id)
     {
-        return inertia('quiz/edit', ['id' => $id]);
+        $categories = Category::all();
+        $quiz = Quiz::with(['category','questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
+
+        return inertia('quiz/edit', [
+            'categories' => $categories,
+            'quiz' => $quiz
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        // Handle updating quiz data
+        $quiz = Quiz::with(['category','questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
+
+        Gate::authorize('update', [Quiz::class, $quiz]);
+
+        $fields = $this->validate($request);
+
+        $this->processForm($fields, $quiz);
+
+        return redirect()
+            ->route('quiz_mylist')
+            ->with('message', __('app.quiz.updated_successfully'));
+    }
+
+    private function validate(Request $request)
+    {
+        return Validator::make($request->all(), [
+            'name' => ['required', 'max:255'],
+            'category.id' => ['required', 'exists:categories,id'],
+            'questions' => ['required'],
+            'questions.*.content' => ['required', 'string'],
+            'questions.*.time_to_answer' => ['required', 'integer', 'min:1'],
+            'questions.*.score' => ['required', 'integer', 'min:1'],
+            'questions.*.answers.*.content' => ['required', 'string'],
+            'questions.*.good_answer.id' => ['required', 'integer'],
+        ], [
+            'category.id.exists' => __('validation.required', ['attribute' => strtolower(__('app.quiz.category'))]),
+            'questions.required' => __('validation.questions.required'),
+            'questions.*.content.required' => __('validation.questions.content.required'),
+            'questions.*.time_to_answer.required' => __('validation.questions.time_to_answer.required'),
+            'questions.*.score.required' => __('validation.questions.score.required'),
+            'questions.*.answers.*.content.required' => __('validation.questions.answers.content.required'),
+            'questions.*.good_answer.id.required' => __('validation.questions.good_answer.required'),
+        ])->validate();
+    }
+
+    private function processForm($fields, Quiz $quiz) 
+    {
+        $quiz->name = $fields['name'];
+        $quiz->category_id = $fields['category']['id'];
+        $quiz->save();
+
+        foreach ($fields['questions'] as $question_index => $question_fields) {
+
+            if (isset($quiz->questions[$question_index])) {
+                $question = $quiz->questions[$question_index];
+            } else {
+                $question = new Question();
+                $question->quiz_id = $quiz->id;
+            }
+
+            $question->content = $question_fields['content'];
+            $question->time_to_answer = $question_fields['time_to_answer'];
+            $question->score = $question_fields['score'];
+            $question->good_answer_id = null;
+            $question->save();
+
+            foreach ($question_fields['answers'] as $answer_index => $answer_fields) {
+
+                if (isset($question->answers[$answer_index])) {
+                    $answer = $question->answers[$answer_index];
+                } else {
+                    $answer = new Answer();
+                    $answer->question_id = $question->id;
+                }
+
+                $answer->content = $answer_fields['content'];
+                $answer->save();
+
+                if ($answer->id == $question_fields['good_answer']['id'] || $answer_index == $question_fields['good_answer']['id']) {
+                    $question->good_answer_id = $answer->id;
+                    $question->save();
+                }
+            }
+        }
+
+        return $quiz;
     }
 
     public function destroy($id)
     {
-        // Handle deleting quiz data
+        $quiz = Quiz::findOrFail($id);
+
+        Gate::authorize('delete', [Quiz::class, $quiz]);
+
+        $quiz->delete();
+
+        return redirect()
+            ->route('quiz_mylist')
+            ->with('message', __('app.quiz.deleted_successfully'));
     }
 }

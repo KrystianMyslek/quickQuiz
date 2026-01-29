@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import ListPos from './components/mylistPos.vue';
+
     import { Link } from '@inertiajs/vue3';
     import { Quiz } from '@/types/index';
 
@@ -42,7 +44,11 @@
         </div>
 
         <div class="h-full overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900 [&::-webkit-scrollbar-thumb]:bg-slate-500">
-
+            <ListPos
+                v-for="quiz in quizes"
+                :key="quiz.id"
+                :quiz="quiz"
+            />
         </div>
 
         <div class="w-full">

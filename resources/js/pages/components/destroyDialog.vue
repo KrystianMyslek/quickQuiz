@@ -70,7 +70,7 @@
                             <div class="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                 <button
                                     type="button"
-                                    class="bg-red-500 hover:bg-red-400 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white sm:ml-3 sm:w-auto "
+                                    class="bg-red-500 hover:bg-red-400 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white sm:ml-3 sm:w-auto cursor-pointer"
                                     @click="openDestroyDialog(false); $emit('confirmedDestroy')"
                                 >
                                     {{ $t('actions.delete') }}
@@ -79,7 +79,7 @@
                                     type="button"
                                     @click="openDestroyDialog(false)"
                                     ref="cancelButtonRef"
-                                    class="inline-flex w-full justify-center rounded-md bg-slate-500 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-400 sm:ml-3 sm:w-auto"
+                                    class="inline-flex w-full justify-center rounded-md bg-slate-500 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-400 sm:ml-3 sm:w-auto cursor-pointer"
                                 >
                                     {{ $t('actions.cancel') }}
                                 </button>

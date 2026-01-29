@@ -4,13 +4,13 @@
     import { capitalize } from 'vue';
 
     const model = defineModel({
-        type: Number,
+        type: Object as () => any,
         required: true,
     });
 
     defineProps({
         options: {
-            type: Object,
+            type: Object as () => Array<any>,
             required: true,
         },
         label: {
@@ -37,7 +37,7 @@
                     class="relative w-full cursor-default rounded-md text-white bg-white/5 py-2 pl-3 pr-10 text-left shadow-md sm:text-sm"
                 >
                     <span class="block truncate">
-                        {{ model ? options.find((c: any) => c.id === model)?.name : $t('app.quiz.select_category') }}
+                        {{ model.id ? options.find((c: any) => c.id === model.id)?.name : $t('app.quiz.select_category') }}
                     </span>
                     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2" >
                         <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -57,7 +57,7 @@
                             v-slot="{ active, selected }"
                             v-for="option in options"
                             :key="option.id"
-                            :value="option.id"
+                            :value="option"
                             as="template"
                         >
                             <li :class="[active ? 'bg-slate-100 text-slate-900' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-10 pr-4']" >

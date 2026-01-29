@@ -31,7 +31,7 @@
 
     const score = defineModel(
         'score', {
-            type: Number,
+            type: Number || null,
             required: true,
         }
     );
@@ -50,16 +50,20 @@
         },
         errors: {
             type: Object
-        }
+        },
+        defaultOpen: {
+            type: Boolean,
+            default: true,
+        },
     });
 
 </script>
 
 <template>
     <div class="border border-slate-500 rounded-md mb-4">
-        <Disclosure v-slot="{ open }" :defaultOpen=true >
+        <Disclosure v-slot="{ open }" :defaultOpen=defaultOpen >
             <DisclosureButton
-                class="flex w-full justify-between rounded-md bg-slate-800 px-4 py-2 text-white hover:bg-slate-700 cursor-pointer"
+                class="flex w-full items-center justify-between rounded-md bg-slate-800 px-4 py-2 text-white hover:bg-slate-700 cursor-pointer"
                 >
                     <span>{{ content }}</span>
                 <ChevronUpIcon
@@ -98,12 +102,17 @@
                 </div>
 
                 <div class="w-full">
-                    <RadioGroup v-model="goodAnswer">
+                    <small class="text-red-600" v-if="errors">{{ errors[`questions.${index}.good_answer.id`] }}</small>
+
+                    <RadioGroup 
+                        v-model="goodAnswer"
+                    
+                    >
                         <RadioGroupOption
                             as="template"
                             v-for="(answer, answerIndex) in answers" 
-                            :key="answerIndex"
-                            :value="answerIndex"
+                            :key="answer.id"
+                            :value="answer.id ? answer.id : answerIndex"
                             v-slot="{ checked }"
                         >
                             <div class="w-1/2 inline-block">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { Category, Question, Answer } from '@/types/index';
     import { useForm } from '@inertiajs/vue3';
-    import TextForm from '../components/inputForm.vue';
+    import InputForm from '../components/inputForm.vue';
     import SelectForm from '../components/selectForm.vue';
     import QuestionForm from './components/questionForm.vue';
 
@@ -14,7 +14,9 @@
 
     const form = useForm({
         name: "",
-        category: 0,
+        category: <Category>{
+            id: 0
+        },
         questions: Array<Question>(),
     });
 
@@ -28,7 +30,9 @@
             answers: Array<Answer>(),
             time_to_answer: 20,
             score: 1,
-            good_answer: 0
+            good_answer: <Answer>{
+                id: 0
+            },
         });
 
         const q_id = form.questions.length - 1;
@@ -49,10 +53,9 @@
 
         <div class="mr-12 flex justify-between">
             <div class="w-2/5 mb-4">
-                <TextForm
+                <InputForm
                     v-model="form.name"
                     :label="$t('app.quiz.name')"
-                    type="text"
                     :error="form.errors.name"
                 />
             </div>
@@ -62,10 +65,13 @@
                     :options="categories"
                     :label="$t('app.quiz.category')"
                     type="text"
-                    :error="form.errors.category"
+                    :error="form.errors['category.id']"
                 />
             </div>
         </div>
+
+        <small class="text-red-600" v-if="form.errors.questions">{{ form.errors.questions }}</small>
+        
 
         <div class="w-full">
             <QuestionForm 
@@ -75,7 +81,7 @@
                 v-model:answers="question.answers"
                 v-model:time-to-answer="question.time_to_answer"
                 v-model:score="question.score"
-                v-model:good-answer="question.good_answer"
+                v-model:good-answer="question.good_answer.id"
                 :index="index"
                 :errors="form.errors"
                 />

@@ -33,10 +33,11 @@ export interface Quiz {
     id: number;
     category: Category
     name: string;
-    user_id: User;
+    user: User;
     created_at: string;
     updated_at: string;
     questions_count?: number;
+    questions: Array<Question>;
 }
 
 export interface Question {
@@ -45,7 +46,7 @@ export interface Question {
     answers: Array<Answer>;
     time_to_answer: number;
     score: number;
-    good_answer: number;
+    good_answer: Answer;
 }
 
 export interface Answer {
