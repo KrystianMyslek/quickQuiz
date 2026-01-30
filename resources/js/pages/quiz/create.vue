@@ -71,7 +71,6 @@
         </div>
 
         <small class="text-red-600" v-if="form.errors.questions">{{ form.errors.questions }}</small>
-        
 
         <div class="w-full">
             <QuestionForm 

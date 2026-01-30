@@ -6,29 +6,65 @@ use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quiz;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class quizController extends Controller
 {
     public function index(Request $request)
     {
-        $quizes = Quiz::with(['category', 'user'])->withCount('questions')->where('user_id', '!=',  $request->user()->id)->get();
+        $quizes = Quiz::when($request->search, function($query) use ($request) {
+            $query
+            ->where('user_id', '!=', $request->user()->id)
+            ->where(function(Builder $query) use ($request) {
+                $query
+                ->where('name', 'LIKE', '%'.$request->search.'%')
+                ->orWhereHas('category', function($query) use ($request) {
+                    $query->where('name', 'LIKE', '%'.$request->search.'%');
+                })
+                ->orWhereHas('user', function($query) use ($request) {
+                    $query->where('name', 'LIKE', '%'.$request->search.'%');
+                });
+            });
+        })
+        ->where('user_id', '!=', $request->user()->id)
+        ->with(['category', 'user'])
+        ->withCount('questions')
+        ->paginate(10)
+        ->withQueryString();
 
-        return inertia('quiz/index', ['quizes' => $quizes]);
+        return inertia('quiz/index', [
+            'quizes' => $quizes,
+            'searchTerm' => $request->search
+        ]);
     }
 
     public function mylist(Request $request)
     {
-        $quizes = Quiz::with(['category', 'user'])->withCount('questions')->where('user_id', $request->user()->id)->get();
+        $quizes = Quiz::when($request->search, function($query) use ($request) {
+            $query
+            ->where('user_id', $request->user()->id)
+            ->where(function(Builder $query) use ($request) {
+                $query
+                ->where('name', 'LIKE', '%'.$request->search.'%')
+                ->orWhereHas('category', function($query) use ($request) {
+                    $query->where('name', 'LIKE', '%'.$request->search.'%');
+                });
+            });
+        })
+        ->where('user_id', $request->user()->id)
+        ->with(['category', 'user'])
+        ->withCount('questions')
+        ->paginate(10)
+        ->withQueryString();
 
-        return inertia('quiz/mylist', ['quizes' => $quizes]);
-    }
-
-    public function show($id)
-    {
-        return inertia('quiz/show', ['id' => $id]);
+        return inertia('quiz/mylist', [
+            'quizes' => $quizes,
+            'searchTerm' => $request->search
+        ]);
     }
 
     public function create()
@@ -61,7 +97,7 @@ class quizController extends Controller
     public function edit($id)
     {
         $categories = Category::all();
-        $quiz = Quiz::with(['category','questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
+        $quiz = Quiz::with(['category', 'questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
 
         return inertia('quiz/edit', [
             'categories' => $categories,
@@ -71,7 +107,7 @@ class quizController extends Controller
 
     public function update(Request $request, $id)
     {
-        $quiz = Quiz::with(['category','questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
+        $quiz = Quiz::with(['category', 'questions.answers', 'questions.goodAnswer'])->where('id', $id)->get()->first();
 
         Gate::authorize('update', [Quiz::class, $quiz]);
 
@@ -124,7 +160,7 @@ class quizController extends Controller
             $question->content = $question_fields['content'];
             $question->time_to_answer = $question_fields['time_to_answer'];
             $question->score = $question_fields['score'];
-            $question->good_answer_id = null;
+            $question->good_answer_id = null; // Temporary, will be set later
             $question->save();
 
             foreach ($question_fields['answers'] as $answer_index => $answer_fields) {
@@ -160,5 +196,11 @@ class quizController extends Controller
         return redirect()
             ->route('quiz_mylist')
             ->with('message', __('app.quiz.deleted_successfully'));
+    }
+
+    public function solve($id)
+    {
+        return inertia('quiz/solve', [
+        ]);
     }
 }

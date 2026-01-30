@@ -30,44 +30,4 @@ class Quiz extends Model
     {
         return $this->hasMany(Question::class, 'quiz_id', 'id');
     }
-
-    // public static function procesCreateForm($fields)
-    // {
-    //     $quiz_fields = [
-    //         'name' => $fields['name'],
-    //         'category_id' => $fields['category']->id,
-    //         'user_id' => $fields['user_id'],
-    //     ];
-
-    //     $quiz = self::create($quiz_fields);
-
-    //     foreach ($fields['questions'] as $question_fields) {
-    //         $question = Question::create([
-    //             'quiz_id' => $quiz->id,
-    //             'content' => $question_fields['content'],
-    //             'time_to_answer' => $question_fields['time_to_answer'],
-    //             'score' => $question_fields['score'],
-    //             'good_answer_id' => null,
-    //         ]);
-
-    //         foreach ($question_fields['answers'] as $answer_index => $answer_fields) {
-    //             $answer = Answer::create([
-    //                 'question_id' => $question->id,
-    //                 'content' => $answer_fields['content'],
-    //             ]);
-
-    //             if ($answer_index == $question_fields['good_answer']['id']) {
-    //                 $question->good_answer_id = $answer->id;
-    //                 $question->save();
-    //             }
-    //         }
-    //     }
-
-    //     return $quiz;
-    // }
-
-    // public static function procesUpdateForm($fields, $quiz)
-    // {
-
-    // }
 }

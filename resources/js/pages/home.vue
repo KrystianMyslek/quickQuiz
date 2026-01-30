@@ -5,6 +5,25 @@
     defineOptions({
         layout,
     });
+
+    defineProps({
+        categories_count: {
+            type: Number,
+            required: true,
+        },
+        quizzes_count: {
+            type: Number,
+            required: true,
+        },
+        questions_count: {
+            type: Number,
+            required: true,
+        },
+        users_count: {
+            type: Number,
+            required: true,
+        },
+    });
 </script>
 
 <template>
@@ -34,19 +53,19 @@
                     </div>
                     <div class="text-center my-10 grid grid-cols-2 md:flex justify-center items-center">
                         <div class="md:w-1/4 my-6 mx-3 rounded-lg border-2 border-slate-500 bg-slate-800 py-4 text-white transition duration-200">
-                            <div>-</div>
+                            <div>{{ categories_count }}</div>
                             <div>{{ $t('app.home_stats.categories') }}</div>
                         </div>
                         <div class="md:w-1/4 my-6 mx-3 rounded-lg border-2 border-slate-500 bg-slate-800 py-4 text-white transition duration-200">
-                            <div>-</div>
+                            <div>{{ quizzes_count }}</div>
                             <div>{{ $t('app.home_stats.quizzes') }}</div>
                         </div>
                         <div class="md:w-1/4 my-6 mx-3 rounded-lg border-2 border-slate-500 bg-slate-800 py-4 text-white transition duration-200">
-                            <div>-</div>
+                            <div>{{ questions_count }}</div>
                             <div>{{ $t('app.home_stats.questions') }}</div>
                         </div>
                         <div class="md:w-1/4 my-6 mx-3 rounded-lg border-2 border-slate-500 bg-slate-800 py-4 text-white transition duration-200">
-                            <div>-</div>
+                            <div>{{ users_count }}</div>
                             <div>{{ $t('app.home_stats.users') }}</div>
                         </div>
                     </div>

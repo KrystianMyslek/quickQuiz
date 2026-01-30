@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\userRole;
+use App\Models\Category;
+use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +56,16 @@ class authController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home');
+    }
+
+    public function home()
+    {
+        return inertia('home', [
+            'categories_count' => Category::count(),
+            'quizzes_count' => Quiz::count(),
+            'questions_count' => Question::count(),
+            'users_count' => User::count(),
+        ]);
     }
 
     public function dashboard()
