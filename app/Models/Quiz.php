@@ -30,4 +30,14 @@ class Quiz extends Model
     {
         return $this->hasMany(Question::class, 'quiz_id', 'id');
     }
+
+    public function result(): HasOne
+    {
+        return $this->hasOne(Result::class, 'quiz_id', 'id');
+    }
+
+    public function questionsScore() : int
+    {
+        return $this->questions()->sum('score');
+    }
 }

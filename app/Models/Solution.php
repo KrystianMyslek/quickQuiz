@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Result extends Model
+class Solution extends Model
 {
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id',
-        'quiz_id',
-        'score',
-        'created_at',
+        'result_id',
+        'question_id',
+        'answer_id',
     ];
 }

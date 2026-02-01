@@ -7,6 +7,7 @@
         { name: 'category_index', admin: true },
         { name: 'quiz_index' },
         { name: 'quiz_mylist' },
+        { name: 'result_index' },
     ];
 </script>
     

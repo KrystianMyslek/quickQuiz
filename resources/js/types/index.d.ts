@@ -37,7 +37,9 @@ export interface Quiz {
     created_at: string;
     updated_at: string;
     questions_count?: number;
+    questions_score?: number;
     questions: Array<Question>;
+    result?: Result;
 }
 
 export interface Question {
@@ -52,4 +54,18 @@ export interface Question {
 export interface Answer {
     id: number;
     content: string;
+}
+
+export interface Solve {
+    question_id: number;
+    user_answer_id: number;
+}
+
+export interface Result {
+    id: number;
+    quiz_id: number;
+    user_id: number;
+    created_at: string;
+    score: number;
+    good_answers_count: number;
 }

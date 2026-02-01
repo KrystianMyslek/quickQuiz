@@ -6,10 +6,11 @@ use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\Result;
+use App\Models\Solution;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class quizController extends Controller
@@ -31,14 +32,15 @@ class quizController extends Controller
             });
         })
         ->where('user_id', '!=', $request->user()->id)
-        ->with(['category', 'user'])
+        ->with(['category', 'user', 'result'])
+        ->whereDoesntHave('result')
         ->withCount('questions')
         ->paginate(10)
         ->withQueryString();
 
         return inertia('quiz/index', [
             'quizes' => $quizes,
-            'searchTerm' => $request->search
+            'searchTerm' => $request->search ?? ""
         ]);
     }
 
@@ -63,7 +65,7 @@ class quizController extends Controller
 
         return inertia('quiz/mylist', [
             'quizes' => $quizes,
-            'searchTerm' => $request->search
+            'searchTerm' => $request->search ?? ""
         ]);
     }
 
@@ -200,7 +202,45 @@ class quizController extends Controller
 
     public function solve($id)
     {
+        $quiz = Quiz::with(['category', 'questions.answers'])->where('id', $id)->get()->first();
+
         return inertia('quiz/solve', [
+            'quiz' => $quiz,
         ]);
     }
+
+    public function verification(Request $request, $id)
+    {
+        $quiz = Quiz::with(['questions.goodAnswer'])->where('id', $id)->get()->first();
+
+        $achieved_score = 0;
+        foreach ($request->solve as $solve) {
+            $question = $quiz->questions->where('id', $solve['question_id'])->first();
+
+            if ($question && $question->good_answer_id == $solve['user_answer_id']) {
+                $achieved_score += $question->score;
+            }
+        }
+        
+        $result = Result::create([
+            'user_id' => $request->user()->id,
+            'quiz_id' => $quiz->id,
+            'score' => $achieved_score,
+            'good_answers_count' => $quiz->questions->count(),
+            'created_at' => now(),
+        ]);
+
+        Solution::insert(array_map(function($solve) use ($result) {
+            return [
+                'result_id' => $result->id,
+                'question_id' => $solve['question_id'],
+                'answer_id' => $solve['user_answer_id'],
+            ];
+        }, $request->solve));
+        
+        return redirect()
+            ->route('result_solution', ['id' => $result->id])
+            ->with('message', __('app.quiz.completed_successfully'));
+    }
+
 }

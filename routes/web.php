@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\quizController;
+use App\Http\Controllers\resultController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [authController::class, 'home'])->name('home');
@@ -39,6 +40,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [quizController::class, 'destroy'])->name('quiz_destroy');
         
         Route::get('/solve/{id}', [quizController::class, 'solve'])->name('quiz_solve');
+        Route::post('/solve/{id}', [quizController::class, 'verification'])->name('quiz_verification');
+    });
+
+    Route::group(['prefix' => 'result'], function () {
+        Route::get('/', [resultController::class, 'index'])->name('result_index');
+        Route::get('/solution/{id}', [resultController::class, 'solution'])->name('result_solution');
     });
 
 });
