@@ -12,6 +12,7 @@ class Result extends Model
         'user_id',
         'quiz_id',
         'score',
+        'good_answers_count',
         'created_at',
     ];
 }

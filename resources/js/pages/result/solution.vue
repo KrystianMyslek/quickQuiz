@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import QuestionPos from './components/questionPos.vue';
+
     defineProps({
         quiz: {
             type: Object,
@@ -9,7 +11,7 @@
             required: true
         },
         solutions: {
-            type: Array,
+            type: Object,
             required: true
         }
     });
@@ -27,5 +29,12 @@
             <span class="font-semibold">{{ $t('app.result.achieved_score') }}:</span>
             <span class="text-2xl ml-4">{{ result.score }} / {{ quiz.questions_score }}</span>
         </div>
+
+        <QuestionPos
+            v-for="(question, index) in quiz.questions"
+            :key="index"
+            :question="question"
+            :solution="solutions[question.id]"
+        />
     </div>
 </template>

@@ -44,9 +44,9 @@ class resultController extends Controller
     public function solution(Request $request, $id)
     {
         $result = Result::where('id', $id)->where('user_id', $request->user()->id)->get()->first();
-        $solutions = Solution::where('result_id', $result->id)->get();
+        $solutions = Solution::where('result_id', $result->id)->get()->keyBy('question_id');
         
-        $quiz = Quiz::with(['questions.goodAnswer'])->where('id', $result->quiz_id)->get()->first();
+        $quiz = Quiz::with(['questions.goodAnswer', 'questions.answers'])->where('id', $result->quiz_id)->get()->first();
         $quiz->questions_score = $quiz->questionsScore();
 
         return inertia('result/solution', [

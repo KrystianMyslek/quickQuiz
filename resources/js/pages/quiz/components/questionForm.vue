@@ -106,7 +106,6 @@
 
                     <RadioGroup 
                         v-model="goodAnswer"
-                    
                     >
                         <RadioGroupOption
                             as="template"

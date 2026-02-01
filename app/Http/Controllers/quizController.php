@@ -213,12 +213,14 @@ class quizController extends Controller
     {
         $quiz = Quiz::with(['questions.goodAnswer'])->where('id', $id)->get()->first();
 
+        $good_answers_count = 0;
         $achieved_score = 0;
         foreach ($request->solve as $solve) {
             $question = $quiz->questions->where('id', $solve['question_id'])->first();
 
             if ($question && $question->good_answer_id == $solve['user_answer_id']) {
                 $achieved_score += $question->score;
+                $good_answers_count++;
             }
         }
         
@@ -226,7 +228,7 @@ class quizController extends Controller
             'user_id' => $request->user()->id,
             'quiz_id' => $quiz->id,
             'score' => $achieved_score,
-            'good_answers_count' => $quiz->questions->count(),
+            'good_answers_count' => $good_answers_count,
             'created_at' => now(),
         ]);
 
