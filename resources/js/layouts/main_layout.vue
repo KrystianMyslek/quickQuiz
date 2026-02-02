@@ -17,8 +17,9 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside class="flex w-70 flex-col bg-slate-900 text-white bg-gradient-to-r from-slate-900 to-slate-700" >
-            <div class="border-b-4 border-slate-700 p-6 text-2xl font-bold">{{ $page.props.name }}</div>
-
+            <div class="border-b-4 border-slate-700 p-6 text-2xl font-bold" style="text-transform: capitalize;">
+                {{ $page.props.name }}
+            </div>
             <nav class="flex-1 space-y-2 my-6">
                 <div v-for="(item, key) in menu" :key="key">
                     <Link

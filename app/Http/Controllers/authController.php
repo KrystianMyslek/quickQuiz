@@ -9,16 +9,23 @@ use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class authController extends Controller
 {
     public function register(Request $request)
     {
-        $user_data = $request->validate([
-            'name' => 'required|string|max:255',
+        $request->merge([
+            'name' => strtolower($request->name)
+        ]);
+
+        return Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:4|confirmed',
-        ]);
+        ], [
+            'name.unique' => __('validation.unique_2', ['attribute' => strtolower(__('validation.attributes.name'))]),
+        ])->validate();
 
         $user_data['role'] = userRole::User->value;
 

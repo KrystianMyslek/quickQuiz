@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('result_id')->constrained('results');
             $table->foreignId('question_id')->constrained('questions');
-            $table->foreignId('answer_id')->constrained('answers');
+            $table->foreignId('answer_id')->nullable()->constrained('answers');
         });
     }
 

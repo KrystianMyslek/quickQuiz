@@ -29,22 +29,26 @@
                 />
             </DisclosureButton>
             <DisclosurePanel class="px-4 pb-2 pt-4 text-sm">
-                <div class="">
-                    <div 
-                        v-for="(answer, index) in question.answers" 
-                        :key="index" 
-                        class="w-1/2 inline-block"
+                <div 
+                    v-if="solution.answer_id == null" 
+                    class="mb-4 text-center text-red-600 font-bold"
+                >
+                    {{ $t('app.result.no_answer_given') }}
+                </div>
+                <div 
+                    v-for="(answer, index) in question.answers" 
+                    :key="index" 
+                    class="w-1/2 inline-block"
+                >
+                    <div
+                        class="p-6 m-2 border-1 rounded-md shadow-2xl text-center"
+                        :class="{
+                            'font-bold': answer.is_correct,
+                            'border-green-600': answer.id == question.good_answer_id,
+                            'border-red-600': answer.id == solution.answer_id && answer.id != question.good_answer_id,
+                        }"
                     >
-                        <div
-                            class="p-6 m-2 border-1 rounded-md shadow-2xl text-center"
-                            :class="{
-                                'font-bold': answer.is_correct,
-                                'border-green-600': answer.id == question.good_answer_id,
-                                'border-red-600': answer.id == solution.answer_id && answer.id != question.good_answer_id,
-                            }"
-                        >
-                            {{ answer.content }}
-                        </div>
+                        {{ answer.content }}
                     </div>
                 </div>
             </DisclosurePanel>

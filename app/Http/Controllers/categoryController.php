@@ -9,9 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class categoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::when($request->search, function($query) use ($request) {
+            $query
+            ->where('name', 'LIKE', '%'.$request->search.'%');
+        })
+        ->paginate(15)
+        ->withQueryString();
 
         return inertia('category/index', [
             'categories' => $categories

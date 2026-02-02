@@ -21,7 +21,8 @@
         search,
         debounce((searchValue) => {
             router.get(props.route, { 
-                search: searchValue 
+                search: searchValue ,
+                page: 1
             }, {
                 preserveState: true,
             });

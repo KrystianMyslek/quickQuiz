@@ -236,7 +236,7 @@ class quizController extends Controller
             return [
                 'result_id' => $result->id,
                 'question_id' => $solve['question_id'],
-                'answer_id' => $solve['user_answer_id'],
+                'answer_id' => empty($solve['user_answer_id']) ? null : $solve['user_answer_id'],
             ];
         }, $request->solve));
         
