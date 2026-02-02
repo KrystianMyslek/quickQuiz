@@ -1,3 +1,0 @@
-<template>
-    SHOW QUIZ
-</template>

@@ -49,6 +49,18 @@ class resultController extends Controller
         $quiz = Quiz::with(['questions.goodAnswer', 'questions.answers'])->where('id', $result->quiz_id)->get()->first();
         $quiz->questions_score = $quiz->questionsScore();
 
+        if ($solutions->count() != $quiz->questions->count()) {
+            foreach ($quiz->questions as $question) {
+                if (!isset($solutions[$question->id])) {
+                    $solutions->put($question->id, new Solution([
+                        'result_id' => $result->id,
+                        'question_id' => $question->id,
+                        'answer_id' => null,
+                    ]));
+                }
+            }
+        }
+
         return inertia('result/solution', [
             'quiz' => $quiz,
             'result' => $result,

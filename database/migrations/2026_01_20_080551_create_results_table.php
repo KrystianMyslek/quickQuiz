@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained('quizes');
             $table->foreignId('user_id')->constrained('users');
-            $table->integer('score');
+            $table->integer('score')->default(0);
             $table->dateTime('created_at');
         });
     }

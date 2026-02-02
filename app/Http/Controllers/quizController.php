@@ -200,9 +200,15 @@ class quizController extends Controller
             ->with('message', __('app.quiz.deleted_successfully'));
     }
 
-    public function solve($id)
+    public function solve(Request $request, $id)
     {
         $quiz = Quiz::with(['category', 'questions.answers'])->where('id', $id)->get()->first();
+
+        Result::create([
+            'user_id' => $request->user()->id,
+            'quiz_id' => $quiz->id,
+            'created_at' => now(),
+        ]);
 
         return inertia('quiz/solve', [
             'quiz' => $quiz,
@@ -224,13 +230,13 @@ class quizController extends Controller
             }
         }
         
-        $result = Result::create([
-            'user_id' => $request->user()->id,
-            'quiz_id' => $quiz->id,
-            'score' => $achieved_score,
-            'good_answers_count' => $good_answers_count,
-            'created_at' => now(),
-        ]);
+        $result = Result::where('user_id', $request->user()->id)
+            ->where('quiz_id', $quiz->id)
+            ->first();
+
+        $result->score = $achieved_score;
+        $result->good_answers_count = $good_answers_count;
+        $result->save();
 
         Solution::insert(array_map(function($solve) use ($result) {
             return [

@@ -11,7 +11,7 @@
 </script>
 
 <template>
-    <div class="w-[50%]">
+    <div class="w-full lg:w-[50%]">
         <div class="card m-2 flex items-center justify-between text-white h-40">
             <div>
                 <img
@@ -20,17 +20,19 @@
                 />
             </div>
     
-            <div class="h-full flex-grow ml-8">
-                <div class="text-xl ">
+            <div class="h-full flex-grow mx-8 overflow-hidden">
+                <div class="text-xl">
                     {{ quiz.category.name }}
                 </div>
-                <div class="text-2xl font-bold mb-4">
+                <div class="text-2xl font-bold mb-2">
                     {{ quiz.name }} 
+                </div>
+                <div>
                     <span class="text-sm">{{ $t('app.quiz.by') }}</span>
                     {{ quiz.user.name }}
                 </div>
-                <div class="">
-                    {{ $t('app.quiz.questions_count') }}: {{ quiz.questions_count }} 
+                <div>
+                    <span class="text-sm">{{ $t('app.quiz.questions_count') }}: {{ quiz.questions_count }} </span>
                 </div>
             </div>
     

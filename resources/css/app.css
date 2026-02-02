@@ -17,11 +17,11 @@ button.custom {
     @apply inline-flex w-full justify-center rounded-md bg-slate-500 text-sm font-semibold text-white hover:bg-slate-400 sm:w-auto
 }
 
-main.main_layout {
+.main_layout {
     @apply flex-1 overflow-y-auto p-4 pb-0 bg-gradient-to-r to-slate-900 from-slate-700;
 }
 
 .card,
-main.main_layout form {
+.main_layout form {
     @apply p-6 border-1 border-slate-500 rounded-md shadow-2xl;
 }

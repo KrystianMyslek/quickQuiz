@@ -5,6 +5,12 @@
     import { useForm } from '@inertiajs/vue3';
     import { ref } from 'vue';
 
+    import layout from '@/layouts/empty_layout.vue';
+
+    defineOptions({
+        layout,
+    });
+
     const props = defineProps({
         quiz: {
             type: Object as () => Quiz,
@@ -41,7 +47,7 @@
 </script>
 
 <template>
-    <div>
+    <div class="h-screen main_layout [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900 [&::-webkit-scrollbar-thumb]:bg-slate-500">
         <QuestionSolve
             :key="active_question.id"
             :question="active_question"

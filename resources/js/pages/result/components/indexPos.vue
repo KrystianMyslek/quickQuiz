@@ -11,8 +11,8 @@
 </script>
 
 <template>
-    <div class="w-[50%]">
-        <div class="card m-2 flex items-center justify-between text-white h-40">
+    <div class="w-full lg:w-[50%]">
+        <div class="card m-2 flex items-center justify-between text-white h-w40">
             <div>
                 <img
                     width="100px"
@@ -20,7 +20,7 @@
                 />
             </div>
 
-            <div class="h-full flex-grow ml-8">
+            <div class="h-full flex-grow mx-8 overflow-hidden">
                 <div class="text-xl ">
                     {{ quiz.category.name }}
                 </div>

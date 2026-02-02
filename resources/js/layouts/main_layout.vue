@@ -16,7 +16,7 @@
         
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="flex w-70 flex-col bg-slate-900 text-white bg-gradient-to-r from-slate-900 to-slate-700" >
+        <aside class="flex lg:w-70 flex-col bg-slate-900 text-white bg-gradient-to-r from-slate-900 to-slate-700" >
             <div class="border-b-4 border-slate-700 p-6 text-2xl font-bold" style="text-transform: capitalize;">
                 {{ $page.props.name }}
             </div>

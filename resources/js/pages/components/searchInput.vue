@@ -26,7 +26,7 @@
             }, {
                 preserveState: true,
             });
-        }, 300)
+        }, 100)
     );
 
 </script>

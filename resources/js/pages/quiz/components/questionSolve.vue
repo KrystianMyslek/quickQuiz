@@ -21,12 +21,11 @@
         }
     }, 1000)
     
-
     onUnmounted(() => clearInterval(timer))
 </script>
 
 <template>
-    <div class="text-white">
+    <div class="text-white mt-10 mx-6">
         <div class="flex">
             <div class="flex-1 border-1 border-slate-500 rounded-md shadow-2xl mb-6 text-2xl p-8">
                 {{ question.content }}
