@@ -118,4 +118,7 @@ return [
     'yes'             => 'Tak',
     'register'        => 'Zarejestruj się',
     'enter'           => 'Wprowadź',
+    'add_question'    => 'Dodaj pytanie',
+    'of'              => 'z',
+    'result'          => 'Wynik',
 ];

@@ -282,4 +282,24 @@ return [
         'work'                     => 'work',
         'year'                     => 'year',
     ],
+    'questions' => [
+        'required' => "At least one question is required",
+        'content' => [
+            'required' => "Question content cannot be empty",
+        ],
+        'answers' => [
+            'content' => [
+                'required' => "Answer content cannot be empty",
+            ],
+        ],
+        'time_to_answer' => [
+            'required' => "Time to answer is required",
+        ],
+        'score' => [
+            'required' => "Score for a correct answer is required",
+        ],
+        'good_answer' => [
+            'required' => "A correct answer must be selected",
+        ]
+    ],
 ];

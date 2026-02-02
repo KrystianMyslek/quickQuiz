@@ -118,4 +118,5 @@ return [
     'yes'             => 'Yes',
     'register'        => 'Register',
     'enter'          => 'Enter',
+    'add_question'   => 'Add Question',
 ];

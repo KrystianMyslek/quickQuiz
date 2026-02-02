@@ -151,6 +151,7 @@ return [
     'timezone'               => 'Pole :attribute musi być prawidłową strefą czasową.',
     'ulid'                   => 'Pole :attribute musi być prawidłowym identyfikatorem ULID.',
     'unique'                 => 'Taki :attribute już występuje.',
+    'unique_2'               => 'Taka :attribute już występuje.',
     'uploaded'               => 'Nie udało się wgrać pliku :attribute.',
     'uppercase'              => 'Pole :attribute musi być zapisane wielkimi literami.',
     'url'                    => 'Format pola :attribute jest nieprawidłowy.',
@@ -281,5 +282,25 @@ return [
         'winner'                   => 'zwycięzca',
         'work'                     => 'praca',
         'year'                     => 'rok',
+    ],
+    'questions' => [
+        'required' => "Należy dodać przynajmniej jedno pytanie",
+        'content' => [
+            'required' => "Pytanie nie może być puste",
+        ],
+        'answers' => [
+            'content' => [
+                'required' => "Odpowiedź nie może być pusta",
+            ],
+        ],
+        'time_to_answer' => [
+            'required' => "Czas na odpowiedź jest wymagany",
+        ],
+        'score' => [
+            'required' => "Punkty za poprawną odpowiedź są wymagane",
+        ],
+        'good_answer' => [
+            'required' => "Należy wybrać poprawną odpowiedź",
+        ]
     ],
 ];
