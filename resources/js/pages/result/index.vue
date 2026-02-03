@@ -7,9 +7,14 @@
     import { Quiz } from '@/types/index';
 
     defineProps({
-        quizes: {
+        results: {
             type: Object as () => { 
-                data: Array<Quiz>;
+                data: Array<{
+                    id: number;
+                    score: number;
+                    good_answers_count: number;
+                    quiz: Quiz;
+                }>;
                 links: Array<{ 
                     url: string; 
                     label: string; 
@@ -50,15 +55,15 @@
 
         <div class="h-full flex flex-wrap content-start justify-between overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900 [&::-webkit-scrollbar-thumb]:bg-slate-500">
             <indexPos
-                v-for="quiz in quizes.data"
-                :key="quiz.id"
-                :quiz="quiz"
+                v-for="result in results.data"
+                :key="result.id"
+                :result="result"
             />
         </div>
 
         <div class="mx-4">
             <PaginationLink 
-                :paginator="quizes" 
+                :paginator="results" 
                 class="mb-3"
             />
         </div>

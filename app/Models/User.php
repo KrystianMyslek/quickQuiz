@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\userRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -48,8 +49,19 @@ class User extends Authenticatable
         ];
     }
 
+    public function quizes() : HasMany
+    {
+        return $this->hasMany(Quiz::class, 'user_id', 'id');
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === userRole::Admin->value ? true : false;
     }
+
+    public function isUser(): bool
+    {
+        return $this->role === userRole::User->value ? true : false;
+    }
+
 }

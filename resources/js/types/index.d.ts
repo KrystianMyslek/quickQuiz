@@ -37,7 +37,7 @@ export interface Quiz {
     created_at: string;
     updated_at: string;
     questions_count?: number;
-    questions_score?: number;
+    questions_sum_score?: number;
     questions: Array<Question>;
     result?: Result;
 }
@@ -68,4 +68,11 @@ export interface Result {
     created_at: string;
     score: number;
     good_answers_count: number;
+}
+
+export interface Solution {
+    id: number;
+    result_id: number;
+    question_id: number;
+    user_answer_id: number;
 }
