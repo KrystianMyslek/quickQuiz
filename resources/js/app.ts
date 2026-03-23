@@ -1,23 +1,24 @@
 import '../css/app.css';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { i18nVue } from 'laravel-vue-i18n';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { i18nVue } from 'laravel-vue-i18n';
 
-import mainLayout from './layouts/main_layout.vue';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import layoutWrapper from './layouts/layout_wrapper.vue';
+
+const appName = import.meta.env.VITE_APP_NAME || 'quickQuiz';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: async (name) => {
-        const page = await resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue'))
+        const page = await resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue'));
 
-        page.default.layout = page.default.layout || mainLayout;
+        page.default.layout = page.default.layout || layoutWrapper;
 
         return page;
     },

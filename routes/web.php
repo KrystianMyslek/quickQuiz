@@ -6,6 +6,13 @@ use App\Http\Controllers\categoryController;
 use App\Http\Controllers\quizController;
 use App\Http\Controllers\resultController;
 
+Route::group(['prefix' => 'quiz'], function () {
+	Route::get('/', [quizController::class, 'index'])->name('quiz_index');
+	
+	Route::get('/solve/{id}', [quizController::class, 'solve'])->name('quiz_solve');
+	Route::post('/solve/{id}', [quizController::class, 'verification'])->name('quiz_verification');
+});
+
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [authController::class, 'home'])->name('home');
     
@@ -14,6 +21,8 @@ Route::middleware(['guest'])->group(function () {
 
     Route::inertia('/register', 'auth/register')->name('register');
     Route::post('register', [authController::class, 'register']);
+
+	Route::get('/guest_solution', [resultController::class, 'guest_solution'])->name('guest_solution');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -31,16 +40,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['prefix' => 'quiz'], function () {
-        Route::get('/', [quizController::class, 'index'])->name('quiz_index');
         Route::get('/mylist', [quizController::class, 'mylist'])->name('quiz_mylist');
         Route::get('/create', [quizController::class, 'create'])->name('quiz_create');
         Route::post('/create', [quizController::class, 'store'])->name('quiz_store');
         Route::get('/{id}/edit', [quizController::class, 'edit'])->name('quiz_edit');
         Route::post('/{id}/edit', [quizController::class, 'update'])->name('quiz_update');
         Route::delete('/{id}', [quizController::class, 'destroy'])->name('quiz_destroy');
-        
-        Route::get('/solve/{id}', [quizController::class, 'solve'])->name('quiz_solve');
-        Route::post('/solve/{id}', [quizController::class, 'verification'])->name('quiz_verification');
     });
 
     Route::group(['prefix' => 'result'], function () {

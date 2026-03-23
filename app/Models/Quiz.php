@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class Quiz extends Model
 {
@@ -43,4 +45,33 @@ class Quiz extends Model
     {
         return $this->questions()->sum('score');
     }
+
+	public static function index(Request $request) {
+        $quizes = Quiz::when($request->search, function($query) use ($request) {
+	        $query
+			->when($request->user(), function ($query, $user) {
+				return $query->where('user_id', '!=', $user->id);
+			})
+            ->where(function(Builder $query) use ($request) {
+                $query
+                ->where('name', 'LIKE', '%'.$request->search.'%')
+                ->orWhereHas('category', function($query) use ($request) {
+                    $query->where('name', 'LIKE', '%'.$request->search.'%');
+                })
+                ->orWhereHas('user', function($query) use ($request) {
+                    $query->where('name', 'LIKE', '%'.$request->search.'%');
+                });
+            });
+        })
+        ->with(['category', 'user', 'result'])
+		->when($request->user(), function ($query, $user) {
+			return $query->where('user_id', '!=', $user->id);
+		})
+        ->whereDoesntHave('result')
+        ->withCount('questions')
+        ->paginate(10)
+        ->withQueryString();
+
+		return $quizes;
+	}
 }

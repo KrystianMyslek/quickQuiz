@@ -12,35 +12,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class quizController extends Controller
 {
     public function index(Request $request)
     {
-        $quizes = Quiz::when($request->search, function($query) use ($request) {
-            $query
-            ->where('user_id', '!=', $request->user()->id)
-            ->where(function(Builder $query) use ($request) {
-                $query
-                ->where('name', 'LIKE', '%'.$request->search.'%')
-                ->orWhereHas('category', function($query) use ($request) {
-                    $query->where('name', 'LIKE', '%'.$request->search.'%');
-                })
-                ->orWhereHas('user', function($query) use ($request) {
-                    $query->where('name', 'LIKE', '%'.$request->search.'%');
-                });
-            });
-        })
-        ->where('user_id', '!=', $request->user()->id)
-        ->with(['category', 'user', 'result'])
-        ->whereDoesntHave('result')
-        ->withCount('questions')
-        ->paginate(10)
-        ->withQueryString();
+		$guest = false;
+		if (!$request->user()) {
+			$guest = true;
+			Session::put('quest_id', "_guest_".uniqid());
+		}
+
+		$quizes = Quiz::index($request);
 
         return inertia('quiz/index', [
             'quizes' => $quizes,
-            'searchTerm' => $request->search ?? ""
+            'searchTerm' => $request->search ?? "",
+            'guest' => $guest
         ]);
     }
 
@@ -204,20 +193,37 @@ class quizController extends Controller
     {
         $quiz = Quiz::with(['category', 'questions.answers'])->where('id', $id)->get()->first();
 
-        Result::create([
-            'user_id' => $request->user()->id,
+		$user_id = $request->user() ? $request->user()->id : Session::get('quest_id');
+
+		$result_data =[
+            'user_id' => $user_id,
             'quiz_id' => $quiz->id,
             'created_at' => now(),
-        ]);
+        ];
+
+		if ($request->user()) {
+			Result::create($result_data);
+		} else {
+			$result = Result::make($result_data);
+			Session::put('result', $result);
+		}
 
         return inertia('quiz/solve', [
             'quiz' => $quiz,
         ]);
     }
 
-    public function verification(Request $request, $id)
+	public function verification(Request $request, $quiz_id) {
+		if ($request->user()) {
+			return $this->user_verification($request, $quiz_id);
+		} else {
+			return $this->guest_verification($request, $quiz_id);
+		}
+	}
+
+    private function user_verification(Request $request, $quiz_id)
     {
-        $quiz = Quiz::with(['questions.goodAnswer'])->where('id', $id)->get()->first();
+        $quiz = Quiz::with(['questions.goodAnswer'])->where('id', $quiz_id)->get()->first();
 
         $good_answers_count = 0;
         $achieved_score = 0;
@@ -250,5 +256,39 @@ class quizController extends Controller
             ->route('result_solution', ['id' => $result->id])
             ->with('message', __('app.quiz.completed_successfully'));
     }
+
+	private function guest_verification(Request $request, $quiz_id)
+	{
+		$quiz = Quiz::with(['questions.goodAnswer'])->where('id', $quiz_id)->get()->first();
+
+		$good_answers_count = 0;
+		$achieved_score = 0;
+		foreach ($request->solve as $solve) {
+			$question = $quiz->questions->where('id', $solve['question_id'])->first();
+
+			if ($question && $question->good_answer_id == $solve['user_answer_id']) {
+				$achieved_score += $question->score;
+				$good_answers_count++;
+			}
+		}
+		
+		$result = Session::get('result');
+		$result->id = random_int(1000000, 9999999);
+		$result->score = $achieved_score;
+		$result->good_answers_count = $good_answers_count;
+		$result->solutions = collect(array_map(function($solve) use ($result) {
+			return new Solution([
+				'result_id' => $result->id,
+				'question_id' => $solve['question_id'],
+				'answer_id' => empty($solve['user_answer_id']) ? null : $solve['user_answer_id'],
+			]);
+		}, $request->solve));
+
+		Session::put('result', $result);
+
+		return redirect()
+			->route('guest_solution')
+			->with('message', __('app.quiz.completed_successfully'));
+	}
 
 }

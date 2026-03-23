@@ -121,4 +121,6 @@ return [
     'add_question'    => 'Dodaj pytanie',
     'of'              => 'z',
     'result'          => 'Wynik',
+	'solve_as_guest'  => 'Rozwiąż jako gość',
+	'back_to_list'    => 'Powrót do listy',
 ];

@@ -1,55 +1,49 @@
 <script setup lang="ts">
-    import { useForm } from '@inertiajs/vue3';
-    import InputForm from '../components/inputForm.vue';
+import { useForm } from '@inertiajs/vue3';
+import InputForm from '../components/inputForm.vue';
 
-    const props = defineProps({
-        category: {
-            type: Object as () => {
-                id: number;
-                name: string;
-                image?: string;
-            },
-            required: true
+const props = defineProps({
+    category: {
+        type: Object as () => {
+            id: number;
+            name: string;
+            image?: string;
         },
-    });
+        required: true,
+    },
+});
 
-    const image_path = props.category.image ?? 'categories/default.png';
+const image_path = props.category.image ?? 'default.png';
 
-    const form = useForm({
-        name: props.category.name,
-        image: null as File | null,
-        preview: null as string | null,
-    });
+const form = useForm({
+    name: props.category.name,
+    image: null as File | null,
+    preview: null as string | null,
+});
 
-    const change = (e: Event) => {
-        if (!(e.target instanceof HTMLInputElement) || !e.target.files) {
-            return;
-        }
+const change = (e: Event) => {
+    if (!(e.target instanceof HTMLInputElement) || !e.target.files) {
+        return;
+    }
 
-        form.image = e.target.files[0];
-        form.preview = URL.createObjectURL(e.target.files[0]);
-    };
+    form.image = e.target.files[0];
+    form.preview = URL.createObjectURL(e.target.files[0]);
+};
 
-    const submit = () => {
-        form.post(route('category_update', { id: props.category.id }));
-    };
-
+const submit = () => {
+    form.post(route('category_update', { id: props.category.id }));
+};
 </script>
 
 <template>
     <form @submit.prevent="submit">
-        <h1 class="text-white text-2xl mb-6">
+        <h1 class="mb-6 text-2xl text-white">
             {{ $t('app.category.edit') }}
         </h1>
 
-        <div class="mr-12 flex justify-between ">
-            <div class="w-2/5 mb-4">
-                <InputForm
-                    v-model="form.name"
-                    :label="$t('app.category.name')"
-                    type="text"
-                    :error="form.errors.name"
-                />
+        <div class="mr-12 flex justify-between">
+            <div class="mb-4 w-2/5">
+                <InputForm v-model="form.name" :label="$t('app.category.name')" type="text" :error="form.errors.name" />
             </div>
 
             <div class="align-end">

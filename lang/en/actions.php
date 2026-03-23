@@ -119,4 +119,8 @@ return [
     'register'        => 'Register',
     'enter'          => 'Enter',
     'add_question'   => 'Add Question',
+	'of'             => 'of',
+	'result'         => 'Result',
+	'solve_as_guest' => 'Solve as Guest',
+	'back_to_list'   => 'Back to List',
 ];

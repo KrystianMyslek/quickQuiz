@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quiz;
 use App\Models\Result;
 use App\Models\Solution;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class resultController extends Controller
 {
@@ -77,6 +79,40 @@ class resultController extends Controller
         }
 
         return inertia('result/solution', [
+            'result' => $result
+        ]);
+    }
+
+    public function guest_solution()
+    {
+    	$result = Session::get('result');
+
+		$quiz = Quiz::where('id', $result->quiz_id)
+			->withCount('questions')
+			->withSum('questions', 'score')
+			->with(['questions', 'questions.goodAnswer', 'questions.answers'])
+			->withTrashed()
+			->first();
+
+		$result->quiz()->associate($quiz);
+
+       	if ($result->solutions->count() != $result->quiz->questions->count()) {
+            foreach ($result->quiz->questions as $question) {
+                $solutions = $result->solutions->keyBy('question_id');
+                if (!isset($solutions[$question->id])) {
+                    $solution = new Solution([
+                        'result_id' => $result->id,
+                        'question_id' => $question->id,
+                        'answer_id' => null,
+                    ]);
+
+                    $result->solutions->push($solution);
+                }
+            }
+        }
+
+        return inertia('result/solution', [
+			'guest' => true,
             'result' => $result
         ]);
     }
