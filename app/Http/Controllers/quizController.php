@@ -26,8 +26,12 @@ class quizController extends Controller
 
 		$quizes = Quiz::index($request);
 
+		$categories = Category::all();
+
         return inertia('quiz/index', [
             'quizes' => $quizes,
+			'categories' => $categories,
+            'selectedCategories' => $request->selected_categories ?? "",
             'searchTerm' => $request->search ?? "",
             'guest' => $guest
         ]);

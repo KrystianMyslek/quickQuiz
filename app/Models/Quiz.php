@@ -67,6 +67,9 @@ class Quiz extends Model
 		->when($request->user(), function ($query, $user) {
 			return $query->where('user_id', '!=', $user->id);
 		})
+		->when($request->selected_categories, function($query) use ($request) {
+			$query->whereIn('category_id', explode(',', $request->selected_categories));
+		})
         ->whereDoesntHave('result')
         ->withCount('questions')
         ->paginate(10)

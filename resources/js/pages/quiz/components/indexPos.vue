@@ -1,31 +1,28 @@
 <script setup lang="ts">
-    import { Link } from '@inertiajs/vue3';
-    import { Quiz } from '@/types/index';
+import { Quiz } from '@/types/index';
+import { Link } from '@inertiajs/vue3';
 
-    defineProps({
-        quiz: {
-            type: Object as () => Quiz,
-            required: true
-        },
-    });
+defineProps({
+    quiz: {
+        type: Object as () => Quiz,
+        required: true,
+    },
+});
 </script>
 
 <template>
     <div class="w-full lg:w-[50%]">
-        <div class="card m-2 flex items-center justify-between text-white h-40">
+        <div class="card m-2 flex items-center justify-between text-white md:h-40">
             <div>
-                <img
-                    width="100px"
-                    :src="quiz.category.image ? '../storage/' + quiz.category.image : '../storage/categories/default.png'"
-                />
+                <img width="100px" :src="quiz.category.image ? '../storage/' + quiz.category.image : '../storage/categories/default.png'" />
             </div>
-    
-            <div class="h-full flex-grow mx-8 overflow-hidden">
+
+            <div class="mx-8 h-full flex-grow">
                 <div class="text-xl">
                     {{ quiz.category.name }}
                 </div>
-                <div class="text-2xl font-bold mb-2">
-                    {{ quiz.name }} 
+                <div class="mb-2 text-2xl font-bold">
+                    {{ quiz.name }}
                 </div>
                 <div>
                     <span class="text-sm">{{ $t('app.quiz.by') }}</span>
@@ -35,11 +32,11 @@
                     <span class="text-sm">{{ $t('app.quiz.questions_count') }}: {{ quiz.questions_count }} </span>
                 </div>
             </div>
-    
+
             <div>
                 <Link
                     :href="route('quiz_solve', { id: quiz.id })"
-                    class="p-4 mb-4 border-1 border-slate-500 rounded-md shadow-2xl text-center align-middle text-slate-500 transition-all hover:text-white hover:bg-slate-800"
+                    class="mb-4 rounded-md border-1 border-slate-500 p-4 text-center align-middle text-slate-500 shadow-2xl transition-all hover:bg-slate-800 hover:text-white"
                 >
                     {{ $t('actions.solve') }}
                 </Link>

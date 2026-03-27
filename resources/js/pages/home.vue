@@ -29,17 +29,17 @@ defineProps({
 <template>
     <div class="w-full bg-gradient-to-r from-slate-900 to-slate-700 md:h-screen">
         <div class="flex h-full flex-col">
-            <div class="mx-4 my-6 md:mx-20 md:flex">
-                <div class="flex-row md:grow">
-                    <Link :href="route('quiz_index')" class="custom my-3 p-10 py-4 md:my-0">
+            <div class="mx-4 my-6 text-center md:mx-20 md:flex md:justify-between">
+                <div class="flex-row">
+                    <Link :href="route('quiz_index')" class="home_button">
                         <span>{{ $t('actions.solve_as_guest') }}</span>
                     </Link>
                 </div>
-                <div class="flex-row-reverse">
-                    <Link :href="route('register')" class="custom my-3 p-10 py-4 md:my-0 md:mr-6">
+                <div class="flex-row md:flex">
+                    <Link :href="route('register')" class="home_button md:mr-4">
                         <span>{{ $t('actions.register') }}</span>
                     </Link>
-                    <Link :href="route('login')" class="custom my-3 p-10 py-4 md:my-0">
+                    <Link :href="route('login')" class="home_button">
                         <span>{{ $t('actions.log_in') }}</span>
                     </Link>
                 </div>

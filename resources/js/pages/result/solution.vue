@@ -34,9 +34,9 @@ defineProps({
             :question="question"
             :solution="result.solutions.find((s: Solution) => s.question_id === question.id)"
         />
-    </div>
 
-    <Link :href="route('quiz_index')" class="custom my-3 p-10 py-4 md:my-0">
-        <span>{{ $t('actions.back_to_list') }}</span>
-    </Link>
+        <Link :href="route('quiz_index')" class="custom mt-6! p-4!">
+            <span>{{ $t('actions.back_to_list') }}</span>
+        </Link>
+    </div>
 </template>

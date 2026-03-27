@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Quiz } from '@/types/index';
+import { Category, Quiz } from '@/types/index';
 import { Link } from '@inertiajs/vue3';
 import PaginationLink from '../components/paginationLink.vue';
 import SearchInput from '../components/searchInput.vue';
+import CategorySearch from './components/categorySearch.vue';
 import IndexPos from './components/indexPos.vue';
 
 defineProps({
@@ -25,6 +26,15 @@ defineProps({
         },
         required: true,
     },
+    categories: {
+        type: Array<Category>,
+        required: true,
+    },
+    selectedCategories: {
+        type: String,
+        required: false,
+        default: '',
+    },
     searchTerm: {
         type: String,
         required: false,
@@ -35,18 +45,18 @@ defineProps({
 
 <template>
     <div class="flex h-full flex-col justify-between gap-6">
-        <div class="flex w-full items-center justify-between">
-            <SearchInput route="" :searchTerm="searchTerm" />
-            <div v-if="guest" class="mr-2">
-                <Link :href="route('register')" class="custom my-3 mr-6 p-10 py-4 md:my-0">
-                    <span>{{ $t('actions.register') }}</span>
-                </Link>
-                <Link :href="route('login')" class="custom my-3 p-10 py-4 md:my-0">
-                    <span>{{ $t('actions.log_in') }}</span>
-                </Link>
-            </div>
+        <div v-if="guest" class="flex w-full items-center justify-end">
+            <Link :href="route('register')" class="custom my-3 mr-6 p-10 py-4 md:my-0">
+                <span>{{ $t('actions.register') }}</span>
+            </Link>
+            <Link :href="route('login')" class="custom my-3 p-10 py-4 md:my-0">
+                <span>{{ $t('actions.log_in') }}</span>
+            </Link>
         </div>
-
+        <div class="flex w-full flex-col">
+            <SearchInput route="" :searchTerm="searchTerm" />
+            <CategorySearch route="" :categories="categories" :selectedCategories="selectedCategories" />
+        </div>
         <div
             class="flex h-full flex-wrap content-start justify-between overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900"
         >
