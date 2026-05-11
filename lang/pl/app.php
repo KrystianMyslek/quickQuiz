@@ -107,5 +107,6 @@ return [
         'good_answers_count' => 'Poprawne odpowiedzi',
         'achieved_score' => 'Osiągnięty wynik',
         'no_answer_given' => 'Czas na odpowiedź minął',
+		'rating' => 'Twoja ocena',
     ],
 ];

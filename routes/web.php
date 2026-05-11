@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/edit', [quizController::class, 'edit'])->name('quiz_edit');
         Route::post('/{id}/edit', [quizController::class, 'update'])->name('quiz_update');
         Route::delete('/{id}', [quizController::class, 'destroy'])->name('quiz_destroy');
+        Route::post('/{id}/rate', [quizController::class, 'rate'])->name('quiz_rate');
     });
 
     Route::group(['prefix' => 'result'], function () {

@@ -58,7 +58,7 @@ defineProps({
             <CategorySearch route="" :categories="categories" :selectedCategories="selectedCategories" />
         </div>
         <div
-            class="flex h-full flex-wrap content-start justify-between overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900"
+            class="flex h-full flex-wrap content-start justify-start overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900"
         >
             <IndexPos v-for="quiz in quizes.data" :key="quiz.id" :quiz="quiz" />
         </div>

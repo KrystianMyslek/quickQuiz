@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\Rating;
 use App\Models\Result;
 use App\Models\Solution;
 use Illuminate\Database\Eloquent\Builder;
@@ -294,5 +295,23 @@ class quizController extends Controller
 			->route('guest_solution')
 			->with('message', __('app.quiz.completed_successfully'));
 	}
+
+    public function rate(Request $request, $quiz_id)
+    {
+        $rating = Rating::where('quiz_id', $quiz_id)->where('user_id', $request->user()->id)->first();
+
+		if (!$rating) {
+			$rating = new Rating();
+			$rating->quiz_id = $quiz_id;
+			$rating->user_id = $request->user()->id;
+		}
+			
+		$rating->score = $request->score;
+        $rating->save();
+
+        return response()->json([
+			'rating' => $rating
+		]);
+    }
 
 }

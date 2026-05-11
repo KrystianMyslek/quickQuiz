@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { Solution } from '@/types/index';
+import { Rating, Result, Solution } from '@/types/index';
 import { Link } from '@inertiajs/vue3';
 import QuestionPos from './components/questionPos.vue';
+import RatingForm from './components/ratingForm.vue';
+import Title from './components/title.vue';
 
 defineProps({
     guest: {
@@ -10,26 +12,26 @@ defineProps({
         default: false,
     },
     result: {
-        type: Object,
+        type: Object as () => Result & Required<Pick<Result, 'quiz'>> & Required<Pick<Result, 'solutions'>>,
         required: true,
+    },
+    rating: {
+        type: Object as () => Rating,
+        required: false,
+        default: null,
     },
 });
 </script>
 
 <template>
     <div class="text-white">
-        <h1 class="mb-6 text-3xl font-bold">{{ $t('app.result.title') }}</h1>
-        <div class="mb-4">
-            <span class="font-semibold">{{ $t('app.result.good_answers_count') }}:</span>
-            <span class="ml-4 text-2xl">{{ result.good_answers_count }} / {{ result.quiz.questions_count }}</span>
-        </div>
-        <div class="mb-4">
-            <span class="font-semibold">{{ $t('app.result.achieved_score') }}:</span>
-            <span class="ml-4 text-2xl">{{ result.score }} / {{ result.quiz.questions_sum_score }}</span>
+        <div class="mr-20 flex justify-between">
+            <Title :result="result" />
+            <RatingForm v-if="!guest" :result="result" :rating="rating" />
         </div>
 
         <QuestionPos
-            v-for="(question, index) in result.quiz.questions"
+            v-for="(question, index) in result.quiz?.questions"
             :key="index"
             :question="question"
             :solution="result.solutions.find((s: Solution) => s.question_id === question.id)"

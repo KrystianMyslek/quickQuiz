@@ -59,9 +59,11 @@ class resultController extends Controller
                     ->withSum('questions', 'score')
                     ->with(['questions', 'questions.goodAnswer', 'questions.answers'])
                     ->withTrashed();
-                } 
+                },
             ])
             ->first();
+
+		$rating = $result->quiz->rating()->where('user_id', $request->user()->id)->first() ?? null;
 
        if ($result->solutions->count() != $result->quiz->questions->count()) {
             foreach ($result->quiz->questions as $question) {
@@ -79,7 +81,8 @@ class resultController extends Controller
         }
 
         return inertia('result/solution', [
-            'result' => $result
+            'result' => $result,
+			'rating' => $rating
         ]);
     }
 

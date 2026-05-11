@@ -107,5 +107,6 @@ return [
         'good_answers_count' => 'Correct Answers',
         'achieved_score' => 'Achieved Score',
         'no_answer_given' => 'Time to answer has expired',
+		'rating' => 'Your Rating',
     ],
 ];

@@ -14,24 +14,24 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     };
 };
 
-export interface User {
+export type User = {
     id: number;
     name: string;
-    role: string,
+    role: string;
     email: string;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Category {
+export type Category = {
     id: number;
     name: string;
     image?: string;
-}
+};
 
-export interface Quiz {
+export type Quiz = {
     id: number;
-    category: Category
+    category: Category;
     name: string;
     user: User;
     created_at: string;
@@ -40,39 +40,49 @@ export interface Quiz {
     questions_sum_score?: number;
     questions: Array<Question>;
     result?: Result;
-}
+    rating_avg_score?: number;
+};
 
-export interface Question {
+export type Question = {
     id: number;
     content: string;
     answers: Array<Answer>;
     time_to_answer: number;
     score: number;
     good_answer: Answer;
-}
+};
 
-export interface Answer {
+export type Answer = {
     id: number;
     content: string;
-}
+};
 
-export interface Solve {
+export type Solve = {
     question_id: number;
     user_answer_id: number;
-}
+};
 
-export interface Result {
+export type Result = {
     id: number;
     quiz_id: number;
     user_id: number;
     created_at: string;
     score: number;
     good_answers_count: number;
-}
+    quiz?: Quiz;
+    solutions?: Record<Solution>;
+};
 
-export interface Solution {
+export type Solution = {
     id: number;
     result_id: number;
     question_id: number;
     user_answer_id: number;
-}
+};
+
+export type Rating = {
+    id: number;
+    quiz_id: number;
+    user_id: number;
+    score: number;
+};

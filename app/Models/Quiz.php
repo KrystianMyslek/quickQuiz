@@ -41,6 +41,11 @@ class Quiz extends Model
         return $this->hasOne(Result::class, 'quiz_id', 'id');
     }
 
+    public function rating(): HasMany
+	{
+		return $this->hasMany(Rating::class, 'quiz_id', 'id');
+	}
+
     public function questionsScore() : int
     {
         return $this->questions()->sum('score');
@@ -64,13 +69,18 @@ class Quiz extends Model
             });
         })
         ->with(['category', 'user', 'result'])
+		->withAvg('rating', 'score')
 		->when($request->user(), function ($query, $user) {
 			return $query->where('user_id', '!=', $user->id);
 		})
 		->when($request->selected_categories, function($query) use ($request) {
 			$query->whereIn('category_id', explode(',', $request->selected_categories));
 		})
-        ->whereDoesntHave('result')
+		->when($request->user(), function ($query, $user) {
+			return $query->whereDoesntHave('result', function ($query) use ($user) {
+    			$query->where('user_id', '=', $user->id);
+			});
+		})
         ->withCount('questions')
         ->paginate(10)
         ->withQueryString();

@@ -151,6 +151,7 @@ return [
     'timezone'               => 'The :attribute field must be a valid timezone.',
     'ulid'                   => 'The :attribute field must be a valid ULID.',
     'unique'                 => 'The :attribute has already been taken.',
+    'unique_2'               => 'The :attribute has already been taken.',
     'uploaded'               => 'The :attribute failed to upload.',
     'uppercase'              => 'The :attribute field must be uppercase.',
     'url'                    => 'The :attribute field must be a valid URL.',

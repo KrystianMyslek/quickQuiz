@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Quiz } from '@/types/index';
-import { Link } from '@inertiajs/vue3';
+import Button from './indexPos/button.vue';
+import CategoryImg from './indexPos/categoryImg.vue';
+import Details from './indexPos/details.vue';
+import Title from './indexPos/title.vue';
 
 defineProps({
     quiz: {
@@ -11,36 +14,27 @@ defineProps({
 </script>
 
 <template>
-    <div class="w-full lg:w-[50%]">
-        <div class="card m-2 flex items-center justify-between text-white md:h-40">
-            <div>
-                <img width="100px" :src="quiz.category.image ? '../storage/' + quiz.category.image : '../storage/categories/default.png'" />
+    <div class="w-full md:w-[50%] 2xl:w-[32%]">
+        <div class="card m-2 text-white sm:hidden md:block lg:hidden">
+            <div class="mb-2 flex w-full">
+                <CategoryImg :image="quiz.category.image" />
+                <Title class="ml-4" :quiz="quiz" />
             </div>
 
-            <div class="mx-8 h-full flex-grow">
-                <div class="text-xl">
-                    {{ quiz.category.name }}
-                </div>
-                <div class="mb-2 text-2xl font-bold">
-                    {{ quiz.name }}
-                </div>
-                <div>
-                    <span class="text-sm">{{ $t('app.quiz.by') }}</span>
-                    {{ quiz.user.name }}
-                </div>
-                <div>
-                    <span class="text-sm">{{ $t('app.quiz.questions_count') }}: {{ quiz.questions_count }} </span>
-                </div>
+            <div class="flex">
+                <Details :quiz="quiz" />
+                <Button :id="quiz.id" />
+            </div>
+        </div>
+
+        <div class="card m-2 hidden items-center justify-between text-white sm:flex md:hidden lg:flex">
+            <CategoryImg :image="quiz.category.image" />
+            <div class="mb-2 ml-4 flex w-full flex-grow flex-col">
+                <Title :quiz="quiz" />
+                <Details :quiz="quiz" />
             </div>
 
-            <div>
-                <Link
-                    :href="route('quiz_solve', { id: quiz.id })"
-                    class="mb-4 rounded-md border-1 border-slate-500 p-4 text-center align-middle text-slate-500 shadow-2xl transition-all hover:bg-slate-800 hover:text-white"
-                >
-                    {{ $t('actions.solve') }}
-                </Link>
-            </div>
+            <Button :id="quiz.id" />
         </div>
     </div>
 </template>
